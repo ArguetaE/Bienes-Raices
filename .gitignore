@@ -1,0 +1,6 @@
+includes/config/database.php
+node_modules
+usuario.php
+info.php
+package-lock.json
+scss
