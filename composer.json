@@ -1,0 +1,17 @@
+{
+    "name": "joser/bienesraices",
+    "description": "Automatizando el proyecto con POO",
+    "type":"proyect",
+    "authors": [
+        {
+            "name": "Jose Argueta",
+            "email": "josearguetaespinoza@gmail.com"
+        }
+    ],
+    "require": {},    
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./classes"
+        }
+    }
+}
