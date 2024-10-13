@@ -32,7 +32,7 @@ class Propiedad {
         $this->id = $argc['id'] ?? '';
         $this->titulo = $argc['titulo'] ?? '';
         $this->precio = $argc['precio'] ?? '';
-        $this->imagen = $argc['imagen'] ?? 'imagen.jpg';
+        $this->imagen = $argc['imagen'] ?? '';
         $this->descripcion = $argc['descripcion'] ?? '';
         $this->habitaciones = $argc['habitaciones'] ?? '';
         $this->wc = $argc['wc'] ?? '';
@@ -40,6 +40,7 @@ class Propiedad {
         $this->creado = date('Y/m/d');
         $this->vendedores_id = $argc['vendedores_id'] ?? '';
     }
+
     public function guardar (){
 
         // Sanitizar los datos
@@ -50,15 +51,12 @@ class Propiedad {
         $query .= " ) VALUES (' ";
         $query .= join("', '", array_values($atributos));
         $query .= " ') ";
-
-        // // Insertar en la base de datos
-        // $query = " INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id ) 
-        // VALUES ( '$this->titulo', '$this->precio', '$this->imagen', '$this->descripcion', '$this->habitaciones', '$this->wc', '$this->estacionamiento', '$this->creado', '$this->vendedores_id' ) ";
         
         $resultado = self::$db->query($query);
 
-        debuguear($resultado);
+        return $resultado;
     }
+
     // Identificar y unir los datos de la BD
     public function atributos(){
         $atributos = [];
@@ -68,6 +66,7 @@ class Propiedad {
         }
         return $atributos;
     }
+
     public function sanitizarAtributos(){
         $atributos = $this->atributos();
         $sanitizado = [];
@@ -77,6 +76,16 @@ class Propiedad {
         }
         return $sanitizado;
     }
+
+    // Subida de archivos
+    public function setImagen($imagen){
+
+    // Asignar al atriburo imagen el nombre de la imagen
+        if($imagen){
+            $this->imagen = $imagen;
+        }
+    }
+
     // Validacion
     public static function getErrores(){
         return self::$errores;
@@ -111,19 +120,45 @@ class Propiedad {
         if(!$this->vendedores_id) {
             self::$errores[] = 'Elige un vendedor';
         }
-
-        // if(!$this->imagen['name'] || $this->imagen['error'] ) {
-        //     $errores[] = 'La Imagen es Obligatoria';
-        // }
-
-        // // Validar por tamaño (1mb máximo)
-        // $medida = 1000 * 1000;
-
-
-        // if($this->imagen['size'] > $medida ) {
-        //     $errores[] = 'La Imagen es muy pesada';
-        // }
+        if(!$this->imagen ) {
+            self::$errores[] = 'La Imagen es Obligatoria';
+        }
         return self::$errores;
+    }
+    // Lista todas las propiedades
+    public static function all(){
+        $query = 'SELECT * FROM propiedades';
+
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
+    public static function consultarSQL($query){
+        // Consultar la base de datos
+        $resultado = self::$db->query($query);
+
+        // Iterar los resultados
+        $array = []; 
+        while ($registro = $resultado->fetch_assoc()) {
+            $array[] = self::crearObjeto($registro);
+        }
+
+        // Liberar la memoria
+        $resultado->free();
+
+        // Retornar los resultados
+        return $array;
+    }
+
+    protected static function crearObjeto($registro){
+        $objeto = new self;
+
+        foreach ($registro as $key => $value) {
+            if (property_exists($objeto, $key)) {
+                $objeto->$key = $value;
+            }
+        }
+        return $objeto;
     }
 
 }
