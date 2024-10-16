@@ -4,14 +4,16 @@
     estaAutenticado();
 
     use  App\Propiedad;
+    use  App\Vendedor;
 
     // Implementar un metodo para obtener todas las propiedades
     $propiedades = Propiedad::all();
+    $vendedores = Vendedor::all();
+debuguear($vendedores);
 
     // Muestra mensaje condicional
     $resultado = $_GET['resultado'] ?? null;
     
-
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'];
         $id = filter_var($id, FILTER_VALIDATE_INT);
@@ -21,13 +23,10 @@
             $propiedad = Propiedad::find($id);
             
             $propiedad->eliminar();
-        }
-
-        
+        }  
     }
 
     // Incluye un template
-
     incluirTemplate('header');
 ?>
 

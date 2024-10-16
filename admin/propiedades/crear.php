@@ -46,7 +46,7 @@
     
         // Validar
         $errores = $propiedad->validar();  
-
+        // debuguear($propiedad);
         if(empty($errores)) { 
 
             // Crear la carpeta para subir imagenes
