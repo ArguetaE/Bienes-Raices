@@ -23,3 +23,9 @@ function debuguear($variable){
     echo"</pre>";
     exit;
 }
+
+// Escapa el Html
+function sane($html) : string{
+    $sane = htmlspecialchars($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');    
+    return $sane;
+}
