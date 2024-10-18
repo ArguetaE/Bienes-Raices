@@ -84,7 +84,7 @@ class ActiveRecord {
     // Identificar y unir los datos de la BD
     public function atributos(){
         $atributos = [];
-        foreach (self::$columnasDB as $columna) {
+        foreach (static::$columnasDB as $columna) {
             if($columna === 'id')continue;
             $atributos[$columna] = $this->$columna;   
         }
@@ -126,43 +126,14 @@ class ActiveRecord {
 
     // Validacion
     public static function getErrores(){
-        return self::$errores;
+        return static::$errores;
     }
 
     public function validar(){
-        
-        if(!$this->titulo) {
-            self::$errores[] = "Debes añadir un titulo";
-        }
-
-        if(!$this->precio) {
-            self::$errores[] = 'El Precio es Obligatorio';
-        }
-
-        if( strlen($this->descripcion ) < 50 ) {
-            self::$errores[] = 'La descripción es obligatoria y debe tener al menos 50 caracteres';
-        }
-
-        if(!$this->habitaciones) {
-            self::$errores[] = 'El Número de habitaciones es obligatorio';
-        }
-        
-        if(!$this->wc) {
-            self::$errores[] = 'El Número de Baños es obligatorio';
-        }
-
-        if(!$this->estacionamiento) {
-            self::$errores[] = 'El Número de lugares de Estacionamiento es obligatorio';
-        }
-        
-        if(!$this->vendedores_id) {
-            self::$errores[] = 'Elige un vendedor';
-        }
-        if(!$this->imagen ) {
-            self::$errores[] = 'La Imagen es Obligatoria';
-        }
-        return self::$errores;
+        static::$errores = [];
+        return static::$errores;
     }
+
     // Lista todas los registros
     public static function all(){
         $query = "SELECT * FROM " . static::$tabla;
@@ -186,7 +157,7 @@ class ActiveRecord {
         // Iterar los resultados
         $array = []; 
         while ($registro = $resultado->fetch_assoc()) {
-            $array[] = self::crearObjeto($registro);
+            $array[] = static::crearObjeto($registro);
         }
 
         // Liberar la memoria

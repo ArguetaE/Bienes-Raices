@@ -9,7 +9,7 @@
     // Implementar un metodo para obtener todas las propiedades
     $propiedades = Propiedad::all();
     $vendedores = Vendedor::all();
-debuguear($vendedores);
+
 
     // Muestra mensaje condicional
     $resultado = $_GET['resultado'] ?? null;
