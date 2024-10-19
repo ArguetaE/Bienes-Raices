@@ -3,10 +3,7 @@
 
         <label for="titulo">Titulo:</label>
         <input type="text" id="titulo" name="propiedad[titulo]" placeholder="Titulo Propiedad" value="<?php
-
-use App\Vendedor;
-
- echo sane($propiedad->titulo); ?>">
+        echo sane($propiedad->titulo); ?>">
 
         <label for="precio">Precio:</label>
         <input type="number" id="precio" name="propiedad[precio]" placeholder="Precio Propiedad" value="<?php echo sane($propiedad->precio); ?>">
