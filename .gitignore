@@ -4,3 +4,4 @@ usuario.php
 info.php
 package-lock.json
 vendor
+includes/config/database.php
